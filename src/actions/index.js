@@ -10,15 +10,17 @@ let driver = new WebDriver();
 let seleniumFunction = new SeleniumFunction(driver);
 
 let executeScript = async () => {
-  const sellingProductInterface = new SellingProduct();
-  let contentGroupIdentity = sellingProductInterface.contentGroup();
 
-  let uiEl = await InterfaceResolve.Single(contentGroupIdentity, null, driver);
-  let t = await uiEl.getText();
-  console.log(t);
+  seleniumFunction.visit('https://www.facebook.com/');
+ // const sellingProductInterface = new SellingProduct();
+  //let contentGroupIdentity = sellingProductInterface.contentGroup();
 
-  const productService = new Product(driver);
-  productService.saveProduct();
+  //let uiEl = await InterfaceResolve.Single(contentGroupIdentity, null, driver);
+  //let t = await uiEl.getText();
+  //console.log(t);
+
+  //const productService = new Product(driver);
+  //productService.saveProduct();
 
 }
 

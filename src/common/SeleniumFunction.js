@@ -5,6 +5,7 @@ let SeleniumFunction = function(driver) {
 
     // visit a webpage
     this.visit = async function(theUrl) {
+        console.log(driver);
         return await this.driver.get(theUrl);
     };
 

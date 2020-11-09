@@ -3,7 +3,7 @@ import Constant from '../../Constant';
 
 class SellingProduct {
   contentGroup = () => {
-    return new ElementIdentity(IdentityType.XPath, '//div[.= "bài đăng bán hàng market"]/ancestor::div[@class="msg-item "]', Constant.WaittingElementTime);
+    return new ElementIdentity(IdentityType.XPath, '//div[.= "Bài đăng giày dép"]/ancestor::div[@class="msg-item "]', Constant.WaittingElementTime);
   }
 
   latestProduct = () => {
@@ -11,7 +11,7 @@ class SellingProduct {
   }
 
   senderName = () => {
-    return new ElementIdentity(IdentityType.XPath, './/div[@class="card-sender-name "]', Constant.WaittingElementTime);
+    return new ElementIdentity(IdentityType.XPath, './/div[@class="card-sender-name "][.="Thảo Carrot"]', Constant.WaittingElementTime);
   }
 
   messageItem = () => {
