@@ -46,8 +46,12 @@ let SeleniumFunction = function(driver) {
     }
 
     this.findByTagName = async function(tagName) {
+        try {
         await this.driver.wait(until.elementLocated(By.tagName(tagName)), 15000, 'Looking for element');
         return await this.driver.findElement(By.tagName(tagName));
+        } catch(ex) {
+            return null;
+        }
     }
 
     this.findByXPath = async function(xpathSelector, root, timer = 15000) {
