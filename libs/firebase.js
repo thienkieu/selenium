@@ -42,6 +42,12 @@ const firebaseService  = function (options, projectName) {
         await this.firebaseApp.database().ref().update(data);
     }
 
+    this.getFilter = async(path, orderField, orderValue) => {
+        let ref = this.firebaseApp.database().ref(path);
+        let snapshot = await ref.orderByChild(orderField).equalTo(orderValue).once('value');
+        return snapshot.val();
+    }
+
     return this;
 }
 

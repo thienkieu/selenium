@@ -18,6 +18,14 @@ class MessagePage {
     return new ElementIdentity(IdentityType.XPath, './/a[@role="link"]', Constant.WaittingElementTime);
   }
 
+  converstationById = (converstationId) => {
+    return new ElementIdentity(IdentityType.XPath, '//a[contains(@data-href, "https://www.facebook.com/messages/t/'+converstationId+'")]', Constant.WaittingElementTime);
+  }
+
+  inputMessage = () => {
+    return new ElementIdentity(IdentityType.XPath, '//div[@contenteditable="true"][@role="combobox"]', Constant.WaittingElementTime);
+  }
+
 }
 
 export default MessagePage;
