@@ -27,10 +27,30 @@ const fbs = [
 ];
 
 (async ()=>{
+    const firebaseApp = new firebaseService();
+    await firebaseApp.initializeApp();
+    let conversationSummery = await  firebaseApp.readOnce('converstaionSummary');
+    let objectKeys = conversationSummery ? Object.keys(conversationSummery) : [];
+    let updates = {};
+    for(let fbIndex =0; fbIndex < fbs.length; fbIndex ++) {
+        let isExisted = objectKeys.filter(m => conversationSummery[m].id === fbs[fbIndex].id);
+        if (isExisted.length < 1) {
+            let id = await firebaseApp.generateId('converstaionSummary');
+            updates['converstaionSummary/' + id] = fbs[fbIndex];
+        }
+    }
+
+    if (Object.keys(updates).length > 0) {
+        console.log(updates);
+        await firebaseApp.update(updates);
+    }
+
+    conversationSummery = await  firebaseApp.readOnce('converstaionSummary');
+    let converstaionSummaryKey = Object.keys(conversationSummery);
 
     let drivers = [];
     for(let i = 0;i < fbs.length; i++) {
-       // await startChrome(fbs[i].port, fbs[i].userDir, fbs[i].profile, false);
+        await startChrome(fbs[i].port, fbs[i].userDir, fbs[i].profile);
         let driver = new WebDriver(fbs[i].port);
         drivers.push({
             id: fbs[i].id,
@@ -38,15 +58,16 @@ const fbs = [
         });
 
         let seleniumFunction = new SeleniumFunction(driver);
-        const sellingProductInterface = new SellingProduct();
-        let contentGroupIdentity = sellingProductInterface.contentGroup();
-        let uiEl = await InterfaceResolve.Single(contentGroupIdentity, null, driver);
-        await uiEl.click();
-        let t = await uiEl.getText();
-        console.log(t);
+        await seleniumFunction.visit('https://www.facebook.com/messages/t');
+        console.log('log 1');
+        let frame = await seleniumFunction.findByTagName('iframe');
+        if (frame) {
+            await driver.switchTo().frame(frame);
+        }
 
-        const productService = new Product(driver);
-        productService.saveProduct();
+        let nodeInfo = converstaionSummaryKey.filter(m => conversationSummery[m].id === fbs[i].id);
+        let messageManager = new Message(driver, firebaseApp, conversationSummery[nodeInfo[0]], nodeInfo[0]);
+        setInterval(messageManager.getNewMessages, 1000);
     }
 })();
 

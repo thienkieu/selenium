@@ -5,6 +5,8 @@ import SeleniumFunction from './src/common/SeleniumFunction'
 import SellingProduct from './src/actions/interface/zalo/SellingProduct';
 import InterfaceResolve from './src/actions/interface/InterfaceResolve';
 import Product from './src/actions/business/zalo/Product';
+import MarketplaceNotification from './src/actions/interface/facebook/MarketplaceNotification';
+
 import startChrome from './src/common/startChrome';
 import firebaseService from './libs/firebase';
 import Message from './src/actions/business/facebook/Message';
@@ -38,6 +40,13 @@ const fbs = [
         });
 
         let seleniumFunction = new SeleniumFunction(driver);
+        await seleniumFunction.visit('https://www.facebook.com/marketplace/notifications');
+        const marketplaceNotification = new MarketplaceNotification();
+
+        const loadingEl = marketplaceNotification.loadingEl();
+        const el = await InterfaceResolve.Single(loadingEl, null, driver);
+
+
         const sellingProductInterface = new SellingProduct();
         let contentGroupIdentity = sellingProductInterface.contentGroup();
         let uiEl = await InterfaceResolve.Single(contentGroupIdentity, null, driver);

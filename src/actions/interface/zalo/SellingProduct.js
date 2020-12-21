@@ -10,6 +10,10 @@ class SellingProduct {
     return new ElementIdentity(IdentityType.XPath, '//div[@class="message-view__scroll__inner fadeInAndOut "]/div[last()]', Constant.WaittingElementTime);
   }
 
+  messageContainer = () => {
+    return new ElementIdentity(IdentityType.XPath, '//div[@class="message-view__scroll__inner fadeInAndOut "]/div', Constant.WaittingElementTime);
+  }
+
   senderName = () => {
     return new ElementIdentity(IdentityType.XPath, './/div[@class="card-sender-name "][.="Thảo Carrot"]', Constant.WaittingElementTime);
   }

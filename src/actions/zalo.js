@@ -12,15 +12,12 @@ let seleniumFunction = new SeleniumFunction(driver);
 let executeScript = async () => {
 
   seleniumFunction.visit('https://www.facebook.com/');
- // const sellingProductInterface = new SellingProduct();
-  //let contentGroupIdentity = sellingProductInterface.contentGroup();
+  const sellingProductInterface = new SellingProduct();
+  let contentGroupIdentity = sellingProductInterface.contentGroup();
 
-  //let uiEl = await InterfaceResolve.Single(contentGroupIdentity, null, driver);
-  //let t = await uiEl.getText();
-  //console.log(t);
 
-  //const productService = new Product(driver);
-  //productService.saveProduct();
+  const productService = new Product(driver);
+  productService.saveProduct();
 
 }
 

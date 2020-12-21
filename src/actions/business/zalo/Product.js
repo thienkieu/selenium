@@ -1,5 +1,6 @@
 import InterfaceResolve from '../../interface/InterfaceResolve';
 import SellingProduct from '../../interface/zalo/SellingProduct';
+import { saveImage } from '../../../../libs/function';
 
 class Product {
     constructor(driver) {
@@ -19,34 +20,51 @@ class Product {
         return null;
     }
 
+    messageContainer
+
     saveProduct = async () => {
-        let itemInterface = this.sellingProduct.messageItem();
-        let container = await this.getLatestProduct();
-        if (!container) {
-            console.log('there is not new post');
-            return;
-        }
-        let postItems = await InterfaceResolve.Mutiple(itemInterface, container , this.driver);
-        if (postItems.length > 0) {
-            let index  = 0;
-            while(index < postItems.length) {
-                index = await this.getProductInfo(postItems, index);
+        let listMessageInterface = this.sellingProduct.messageContainer();
+        let listContainer = await InterfaceResolve.Mutiple(listMessageInterface, null, this.driver);
+        for (let m = 0; m < listContainer.length; m++ ) {
+            let senderNameInterface = this.sellingProduct.senderName();
+            let senderEl = await InterfaceResolve.Single(senderNameInterface, listContainer[m], this.driver);
+            if (!senderEl) continue;
+
+            let itemInterface = this.sellingProduct.messageItem();
+            let container = listContainer[m];// await this.getLatestProduct();
+            if (!container) {
+                console.log('there is not new post');
+                return;
             }
-            console.log(this.products);
+            let postItems = await InterfaceResolve.Mutiple(itemInterface, container , this.driver);
+            if (postItems.length > 0) {
+                let index  = 0;
+                while(index < postItems.length) {
+                    index = await this.getProductInfo(postItems, index);
+                }
+
+            }
         }
+
+        //console.log(this.products);
+        saveImage('D:\\giay_dep/', this.products);
+        //console.log(this.products);
     }
 
     addNewProduct = (images, title, size, status, price) => {
-        let p = {
-            images,
-            title,
-            size,
-            status,
-            price
-        };
+        console.log(title)
+        if (title)  {
+            let p = {
+                images,
+                title,
+                size,
+                status,
+                price
+            };
 
-        this.products.push(p);
-        console.log(this.products);
+            this.products.push(p);
+        }
+
     }
 
     getProductInfo = async (messages, index) => {
@@ -116,7 +134,7 @@ class Product {
     }
 
     isTitle = (text) => {
-        if (text.toLowerCase().includes('giày') || text.toLowerCase().includes('dép')) return text;
+        if (text.toLowerCase().indexOf('giày') === 0 || text.toLowerCase().indexOf('dép') === 0 )  return text;
         return false;
     }
 

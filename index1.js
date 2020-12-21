@@ -15,7 +15,7 @@ let driver = new WebDriver();
 let seleniumFunction = new SeleniumFunction(driver);
 
 let executeScript = async () => {
-    /*await LoginStep(driver);
+    await LoginStep(driver);
     await sleep(2000);
     await OpenMarketplace(driver);
     await sleep(2000);
@@ -36,7 +36,7 @@ let executeScript = async () => {
         ],
         price: '100000'
     };
-    await PostProduct(driver, productInfo);*/
+    await PostProduct(driver, productInfo);
 
     //await ZaloStep(driver);
 

@@ -16,6 +16,22 @@ const downloadImage = (url, filename, callback) => {
   });
 }
 
+const saveImage = (path, productInfo) => {
+    //console.log(productInfo);
+    for(let i = 0; i < productInfo.length; i++) {
+        let imageUrls = productInfo[i].images;
+        let t = makeFileName(productInfo[i].title.replace(/(\r\n|\n|\r)/gm, "").toLowerCase().replace(/ /g, ''));
+
+        if (!fs.existsSync(path+t)){
+          fs.mkdirSync(path+t);
+        }
+        for(let j =0 ;j < imageUrls.length; j++) {
+          downloadImage(imageUrls[j],path+t+'/image'+Date.now()+(j +1)+'.png', function(){});
+        }
+
+      }
+}
+
 const hashCode = (value) => {
     var hash = 0, i, chr;
     for (i = 0; i < value.length; i++) {
@@ -27,8 +43,66 @@ const hashCode = (value) => {
     return hash;
 }
 
+let meta = [
+    {
+        key: ['ý','Ý'],
+        to: 'y'
+    },
+    {
+        key: ['ũ','ụ','ư','ữ', 'ự', 'ù', 'ú', 'û', 'ü', 'Ü', 'Û', 'Ú', 'Ù', 'Ư'],
+        to: 'u'
+    },
+    {
+        key: ['ờ','ỏ','ộ','ỏ','ơ', 'ợ','ổ','ồ', 'ố','ò', 'ó', 'ô', 'õ', 'ö', 'ð', 'Ö', 'Õ','Ố', 'Ô', 'Ó', 'Ò', 'Ồ'],
+        to: 'o'
+    },
+    {
+        key: ['ñ', 'Ñ'],
+        to: 'n'
+    },
+    {
+        key:['ĩ','ỉ', 'ï', 'î', 'í', 'ì', 'ị','Ï', 'Î', 'Í', 'Ì','Ỉ'],
+        to: 'i'
+    },
+    {
+        key: ['ể','ẹ','ễ', 'ệ','ề', 'ë', 'ê','é', 'è', 'Ë', 'Ê', 'É', 'È', 'ế', 'Ế'],
+        to: 'e'
+    },
+    {
+        key: ['ẫ','ả', 'ã', 'ấ', 'ầ', 'ă', 'ắ', 'ằ', 'ạ', 'ặ', 'ậ','ẩ', 'å', 'ä', 'ã', 'â', 'á', 'à', 'Å', 'Ä', 'Ã', 'Â', 'Á', 'À', 'Ă','Ạ'],
+        to: 'a'
+    },
+    {
+        key: ['đ','Ð'],
+        to: 'd'
+    }
+];
+
+function makeFileName(title) {
+    let ret = '';
+
+    for(let i = 0; i < title.length; i++) {
+        let exist = false;
+        //console.log(title[i]);
+        for(let j = 0; j < meta.length; j ++) {
+            if (meta[j].key.includes(title[i])) {
+                ret += meta[j].to;
+                exist = true;
+                break;
+            }
+        }
+        if (exist === false) {
+            ret += title[i];
+        }
+    }
+
+    return ret;
+}
+
+
 export {
   sleep,
   hashCode,
   downloadImage,
+  saveImage,
 }

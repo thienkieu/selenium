@@ -18,12 +18,16 @@ class MessagePage {
     return new ElementIdentity(IdentityType.XPath, './/a[@role="link"]', Constant.WaittingElementTime);
   }
 
-  converstationById = (converstationId) => {
-    return new ElementIdentity(IdentityType.XPath, '//a[contains(@data-href, "https://www.facebook.com/messages/t/'+converstationId+'")]', Constant.WaittingElementTime);
+  inputSearch = () => {
+    return new ElementIdentity(IdentityType.XPath, '//input[@aria-label="Tìm kiếm trên Messenger"]', Constant.WaittingElementTime);
   }
 
-  inputMessage = () => {
-    return new ElementIdentity(IdentityType.XPath, '//div[@contenteditable="true"][@role="combobox"]', Constant.WaittingElementTime);
+  listSearchResultMessage = () => {
+    return new ElementIdentity(IdentityType.XPath, '//div[@class="bp9cbjyn nhd2j8a9 j83agx80 ni8dbmo4 stjgntxs l9j0dhe7 dwzzwef6 ue3kfks5 pw54ja7n uo3d90p7 l82x9zwi"]/a', Constant.WaittingElementTime);
+  }
+
+  clientChatMessage = ()=> {
+    return new ElementIdentity(IdentityType.XPath, '//div[@class="oo9gr5id"]', Constant.WaittingElementTime);
   }
 
 }
