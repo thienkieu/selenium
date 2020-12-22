@@ -18,6 +18,7 @@
   },
   "scripts": {
     "start": "node --es-module-specifier-resolution=node index.js",
+    "firebase": "node --es-module-specifier-resolution=node firebase.js",
     "debug": "node --es-module-specifier-resolution=node index.js",
     "dev": "node --es-module-specifier-resolution=node index.js",
     "watch:dev": "nodemon"

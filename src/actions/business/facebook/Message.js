@@ -6,13 +6,13 @@ import SeleniumFunction from '../../../common/SeleniumFunction';
 import { addListener } from 'nodemon';
 
 class Message {
-    constructor(driver, firebaseService, facebookInfo, nodeKey) {
+    constructor(driver, firebaseService, facebookInfo) {
         this.messagePage = new MessagePagae();
-        this.driver = driver;
-        this.nodeKey = nodeKey;
+        this.driver = driver;        
         this.firebaseService = firebaseService;
         this.facebookInfo = facebookInfo;
         this.messagesInfo = [];
+        this.latestMessages = {};
     }
 
     getConversationId = async (container) => {
@@ -57,26 +57,39 @@ class Message {
             let newMessgaesInterface = this.messagePage.newMessageItem();
             let newMessagesItems = await InterfaceResolve.Mutiple(newMessgaesInterface, messageList , this.driver);
 
+            let updates = {};
             for(let newMessageItem = 0; newMessageItem < newMessagesItems.length; newMessageItem++) {
                 let newMessageValueInterface = this.messagePage.latestNewMessage();
                 let latestMessgeValue = await InterfaceResolve.Single(newMessageValueInterface, newMessagesItems[newMessageItem] , this.driver);
                 let m = await latestMessgeValue.getText();
+                let sender = await latestMessgeValue.getText();
                 let conversationId = await this.getConversationId(newMessagesItems[newMessageItem]);
-                let updates = {};
-
-                updates['converstaionSummary/' + this.nodeKey + '/conversations/' + hashCode(conversationId)] = {
-                    message: m,
-                    id: conversationId
-                };
-
+                
                 let time = new Date().getTime();
-                updates['converstaionDetail/' + this.nodeKey + '/conversations/' + hashCode(conversationId)+'/' + time] = {
-                    message: m
-                };
+                if (latestMessages[conversationId] != m) {
+                    updates['converstaionSummary/' + hashCode(conversationId)] = {
+                        m: {
+                            m,
+                            sender,
+                        },
+                        facebookInfo: facebookInfo,
+                        id: conversationId
+                    };
 
-                this.firebaseService.update(updates);
-                newMessagesItems[newMessageItem].click();
+                    updates['converstaionDetail/' + hashCode(conversationId) + '/' + time] = {
+                        m: {
+                            m,
+                            sender,
+                        },
+                        facebookInfo: facebookInfo,
+                        id: conversationId
+                    };
+
+                    this.latestMessages[conversationId] = m;
+                }
             }
+
+            this.firebaseService.update(updates);
 
     }
 }

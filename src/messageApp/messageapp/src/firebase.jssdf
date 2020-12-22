@@ -1,0 +1,50 @@
+/* eslint-disable no-undef */
+const firebaseService  = (options, projectName) => {
+    this.firebaseApp = this.initializeApp(options, projectName);
+    
+    this.initializeApp =  (options, projectName) => {
+        let firebaseConfig = {
+            apiKey: options.apiKey ? options.apiKey: "AIzaSyClE-xrIGSl_-vKYtRFRFBM-JZ5YuoIjJo",
+            authDomain: options.authDomain ? options.authDomain: "fbchat-3a4de.firebaseapp.com",
+            databaseURL: options.databaseURL ? options.databaseURL: "https://fbchat-3a4de.firebaseio.com",
+            projectId: options.projectId ? options.projectId: "fbchat-3a4de",
+            storageBucket: options.storageBucket ? options.storageBucket: "fbchat-3a4de.appspot.com",
+            messagingSenderId: options.messagingSenderId ? options.messagingSenderId: "212851134272",
+            appId: options.appId ? options.appId: "1:212851134272:web:9ddd6bf5ab3f1eb55334a5",
+            measurementId: options.measurementId ? options.measurementId: "G-ZQC2MXESTB"
+        };
+
+        return  projectName ? firebase.initializeApp(firebaseConfig, projectName): firebase.initializeApp(firebaseConfig);
+    }
+}
+
+export default firebaseService;
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.auth().signInWithEmailAndPassword('thien1988@gmail.com', '123456').catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // ...
+  });
+
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+     console.log(user);
+    } else {
+      // No user is signed in.
+    }
+  });
+
+  function writeUserData(userId, name, email, imageUrl) {
+    firebase.database().ref('users/' + userId).set({
+      username: name,
+      email: email,
+      profile_picture : imageUrl
+    });
+  }
+
+  writeUserData('122', 'thien', 'thientest@gmail.com', 'thien image');
+
+export default firebase;
