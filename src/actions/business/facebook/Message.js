@@ -68,21 +68,17 @@ class Message {
                 let time = new Date().getTime();
                 if (latestMessages[conversationId] != m) {
                     updates['converstaionSummary/' + hashCode(conversationId)] = {
-                        m: {
-                            m,
-                            sender,
-                        },
-                        facebookInfo: facebookInfo,
-                        id: conversationId
+                        m,
+                        sender,
+                        ...this.facebookInfo,
+                        conversationId
                     };
 
                     updates['converstaionDetail/' + hashCode(conversationId) + '/' + time] = {
-                        m: {
-                            m,
-                            sender,
-                        },
-                        facebookInfo: facebookInfo,
-                        id: conversationId
+                        m,
+                        sender,
+                        ...this.facebookInfo,
+                        conversationId
                     };
 
                     this.latestMessages[conversationId] = m;
