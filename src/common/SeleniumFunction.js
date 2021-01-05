@@ -1,4 +1,5 @@
 import {By, until} from 'selenium-webdriver';
+import { writeScreenshot } from '../../libs/function';
 
 let SeleniumFunction = function(driver) {
     this.driver = driver;
@@ -69,13 +70,13 @@ let SeleniumFunction = function(driver) {
     this.findElementsByXPaths = async function(xpathSelector, root) {
       try {
         if (!root) {
-          await this.driver.wait(until.elementsLocated(By.xpath(xpathSelector)), 15000, 'Looking for element');
+          await this.driver.wait(until.elementsLocated(By.xpath(xpathSelector)),  15000, 'Looking for element');
           return await this.driver.findElements(By.xpath(xpathSelector));
         }
 
         return await root.findElements(By.xpath(xpathSelector));
       } catch(ex) {
-        return null;
+        return [];
       }
     }
 
@@ -88,6 +89,17 @@ let SeleniumFunction = function(driver) {
     // click web elements
     this.click = async function (el) {
         return await el.click();
+    };
+
+    // click web elements
+    this.submit = async function (el) {
+      return await el.click();
+  };
+
+    
+    this.takeScreenshot = async(name) => {
+      const data = await  this.driver.takeScreenshot();
+      writeScreenshot(data, name);
     };
 };
 

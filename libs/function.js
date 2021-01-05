@@ -1,6 +1,12 @@
 import fs from 'fs';
 import request from 'request';
 
+const writeScreenshot = (data, name) => {
+    name = name || 'ss.png';
+    let screenshotPath = 'C:\\selenium_local_map\\';
+    fs.writeFileSync(screenshotPath + name, data, 'base64');
+};
+
 const sleep = (ms) => {
     return new Promise((resolve) => {
       setTimeout(resolve, ms);
@@ -78,6 +84,15 @@ let meta = [
     }
 ];
 
+function getCurrentDateTime() {
+    let date = new Date();
+    return `${date.getFullYear()}_${date.getMonth()+1}_${date.getDate()}_${date.getHours()}_${date.getMinutes()}_${date.getSeconds()}`;
+
+    let format =  new Date().toLocaleString();
+    console.log(format);
+    return format.replace(/\//gi,'_');
+}
+
 function makeFileName(title) {
     let ret = '';
 
@@ -105,4 +120,6 @@ export {
   hashCode,
   downloadImage,
   saveImage,
+  writeScreenshot,
+  getCurrentDateTime,
 }

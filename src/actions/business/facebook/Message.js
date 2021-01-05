@@ -3,7 +3,6 @@ import MessagePagae from '../../interface/facebook/MessagePage';
 import { Key, By } from 'selenium-webdriver';
 import { sleep, hashCode } from '../../../../libs/function';
 import SeleniumFunction from '../../../common/SeleniumFunction';
-import { addListener } from 'nodemon';
 
 class Message {
     constructor(driver, firebaseService, facebookInfo) {
@@ -16,9 +15,7 @@ class Message {
     }
 
     getConversationId = async (container) => {
-        let linkInterface = this.messagePage.linkConverstation();
-        let linkEl = await InterfaceResolve.Single(linkInterface, container, this.driver);
-        let linkURL = await linkEl.getAttribute('data-href');
+        let linkURL = await container.getAttribute('href');
         let aURL = linkURL.split('?');
         aURL = aURL[0].split('/');
         return aURL[5];
@@ -50,43 +47,104 @@ class Message {
         
     }
 
-    getNewMessages = async () => {
-            let messageListInterface = this.messagePage.messageList();
-            let messageList = await InterfaceResolve.Single(messageListInterface, null, this.driver);
+    getAnswerMessage = async () => {
+        let conversationIds = Object.keys(this.latestMessages);
+        let updates = {};
+        for(let i = 0; i < conversationIds.length; i++) {
+            let conversationId = conversationIds[i];
 
-            let newMessgaesInterface = this.messagePage.newMessageItem();
-            let newMessagesItems = await InterfaceResolve.Mutiple(newMessgaesInterface, messageList , this.driver);
-
-            let updates = {};
-            for(let newMessageItem = 0; newMessageItem < newMessagesItems.length; newMessageItem++) {
-                let newMessageValueInterface = this.messagePage.latestNewMessage();
-                let latestMessgeValue = await InterfaceResolve.Single(newMessageValueInterface, newMessagesItems[newMessageItem] , this.driver);
-                let m = await latestMessgeValue.getText();
-                let sender = await latestMessgeValue.getText();
-                let conversationId = await this.getConversationId(newMessagesItems[newMessageItem]);
-                
+            let latestElementInterface = this.messagePage.latestMessageBaseOnConversationIdElementInterface(conversationId);
+            let textElement = await InterfaceResolve.Single(latestElementInterface, null, this.driver );
+            let fullMessage = await textElement.getText();
+            if (fullMessage != this.latestMessages[conversationId]) {
                 let time = new Date().getTime();
-                if (latestMessages[conversationId] != m) {
-                    updates['converstaionSummary/' + hashCode(conversationId)] = {
-                        m,
-                        sender,
-                        ...this.facebookInfo,
-                        conversationId
-                    };
-
-                    updates['converstaionDetail/' + hashCode(conversationId) + '/' + time] = {
-                        m,
-                        sender,
-                        ...this.facebookInfo,
-                        conversationId
-                    };
-
-                    this.latestMessages[conversationId] = m;
+                let mArray = fullMessage.split(':');
+                let m = "";
+                let sender = "Other";
+                if (mArray && mArray.length == 1) {
+                    m = mArray[0];
                 }
+                if (mArray && mArray.length == 2) {
+                    m = mArray[1];
+                    sender = mArray[0];
+                }
+
+                updates['converstaionDetail/' + hashCode(conversationId) + '/' + time] = {
+                    m,
+                    sender,
+                    ...this.facebookInfo,
+                    conversationId
+                };
+
+                this.latestMessages[conversationId] = fullMessage;
             }
+        }
 
+        if (Object.keys(updates).length > 0) {
             this.firebaseService.update(updates);
+        }
 
+    }
+
+    getImageUrl = async () => {
+        
+    }
+
+    getNewMessages = async () => {
+        let hasNewMessageElementInterface = this.messagePage.hasNewMessageLinkElementInterface();
+        let listNewMessages = await InterfaceResolve.Mutiple(hasNewMessageElementInterface, null, this.driver);
+
+        let updates = {};
+        for(let newMessageItem = 0; newMessageItem < listNewMessages.length; newMessageItem++) {
+            let textElementInterface = this.messagePage.latestMessageOfConversationElementInterface();
+            let textElement = await InterfaceResolve.Single(textElementInterface, listNewMessages[newMessageItem], this.driver );
+
+            let fullMessage = await textElement.getText();
+            let mArray = fullMessage.split(':');
+            let m = "";
+            let sender = "Other";
+            if (mArray && mArray.length == 1) {
+                m = mArray[0];
+            }
+            if (mArray && mArray.length == 2) {
+                m = mArray[1];
+                sender = mArray[0];
+            }
+            
+            let conversationId = await this.getConversationId(listNewMessages[newMessageItem]);
+            
+            let time = new Date().getTime();
+            if (this.latestMessages[conversationId] != fullMessage) {
+                updates['converstaionSummary/' + hashCode(conversationId)] = {
+                    m,
+                    sender,
+                    ...this.facebookInfo,
+                    conversationId
+                };
+
+                updates['converstaionDetail/' + hashCode(conversationId) + '/' + time] = {
+                    m,
+                    sender,
+                    ...this.facebookInfo,
+                    conversationId
+                };
+
+                this.latestMessages[conversationId] = fullMessage;
+            }
+        }
+        if (Object.keys(updates).length > 0) {
+            this.firebaseService.update(updates);
+        }
+        
+    }
+
+    processMessage = async () => {
+        this.getNewMessages();
+        this.getAnswerMessage();
+
+        setTimeout(async() => {
+            this.processMessage();
+        }, 5000);
     }
 }
 
