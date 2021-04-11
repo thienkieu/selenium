@@ -1,4 +1,4 @@
-const {By, until} = require('selenium-webdriver');
+import {By, until} from 'selenium-webdriver';
 import { writeScreenshot } from './function';
 
 let SeleniumFunction = function(driver) {
