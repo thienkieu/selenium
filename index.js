@@ -24,7 +24,7 @@ const fbs = [
 
     let drivers = [];
     for(let i = 0;i < fbs.length; i++) {
-        await startChrome(fbs[i].port, fbs[i].userDir, fbs[i].profile, false);
+        await startChrome(fbs[i].port, fbs[i].userDir, fbs[i].profile, true, 'linux');
         let driver = new WebDriver(fbs[i].port);
         drivers.push({
             id: fbs[i].id,
