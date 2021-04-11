@@ -3,8 +3,8 @@ import request from 'request';
 
 const writeScreenshot = (data, name) => {
     name = name || 'ss.png';
-    let screenshotPath = './';//'C:\\selenium_local_map\\';
-    fs.writeFileSync(screenshotPath + name, data, 'base64');
+    //let screenshotPath = './';//'C:\\selenium_local_map\\';
+    fs.writeFileSync(name, data, 'base64');
 };
 
 const sleep = (ms) => {
