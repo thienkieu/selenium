@@ -1,4 +1,5 @@
 import WebDriver from './libs/driver';
+import { sleep } from './libs/function';
 import SeleniumFunction from './libs/SeleniumFunction'
 import startChrome from './src/common/startChrome';
 
@@ -32,7 +33,15 @@ const fbs = [
         });
 
         let seleniumFunction = new SeleniumFunction(driver);
-        await seleniumFunction.visit('https://twitter.com/?lang=en');
+        await seleniumFunction.visit('https://twitter.com/login');
+        let inputUserName = await seleniumFunction.findByXPath('//input[@name="session[username_or_email]"][@type="text"]');
+        await seleniumFunction.write(inputUserName, 'thien.kieuvm@gmail.com');
+        let inputPassword = await seleniumFunction.findByXPath('//input[@name="session[password]"][@type="password"]');
+        await seleniumFunction.write(inputPassword, '0958588127thien');
+
+        let loginButton = await seleniumFunction.findByXPath('//div[@data-testid="LoginForm_Login_Button"][@role="button"][.="Log in"][@aria-disabled="true"]');
+        await loginButton.click();
+        sleep(5000);
         await seleniumFunction.takeScreenshot('./images/twiter.png');
     }
 })();
