@@ -1,13 +1,7 @@
-import chromedriver from 'chromedriver';
-import { Key, By } from 'selenium-webdriver';
-import WebDriver from './src/common/driver';
-import SeleniumFunction from './src/common/SeleniumFunction'
-import SellingProduct from './src/actions/interface/zalo/SellingProduct';
-import InterfaceResolve from './src/actions/interface/InterfaceResolve';
-import Product from './src/actions/business/zalo/Product';
+import WebDriver from './libs/driver';
+import SeleniumFunction from './libs/SeleniumFunction'
 import startChrome from './src/common/startChrome';
-import firebaseService from './libs/firebase';
-import Message from './src/actions/business/facebook/Message';
+
 
 const fbs = [
     {
@@ -30,7 +24,7 @@ const fbs = [
 
     let drivers = [];
     for(let i = 0;i < fbs.length; i++) {
-       // await startChrome(fbs[i].port, fbs[i].userDir, fbs[i].profile, false);
+        await startChrome(fbs[i].port, fbs[i].userDir, fbs[i].profile, false);
         let driver = new WebDriver(fbs[i].port);
         drivers.push({
             id: fbs[i].id,
@@ -38,15 +32,8 @@ const fbs = [
         });
 
         let seleniumFunction = new SeleniumFunction(driver);
-        const sellingProductInterface = new SellingProduct();
-        let contentGroupIdentity = sellingProductInterface.contentGroup();
-        let uiEl = await InterfaceResolve.Single(contentGroupIdentity, null, driver);
-        await uiEl.click();
-        let t = await uiEl.getText();
-        console.log(t);
-
-        const productService = new Product(driver);
-        productService.saveProduct();
+        await seleniumFunction.visit('https://twitter.com/?lang=en');
+        await seleniumFunction.takeScreenshot('./images/twiter.png');
     }
 })();
 

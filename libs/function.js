@@ -1,6 +1,12 @@
 import fs from 'fs';
 import request from 'request';
 
+const writeScreenshot = (data, name) => {
+    name = name || 'ss.png';
+    let screenshotPath = './';//'C:\\selenium_local_map\\';
+    fs.writeFileSync(screenshotPath + name, data, 'base64');
+};
+
 const sleep = (ms) => {
     return new Promise((resolve) => {
       setTimeout(resolve, ms);
@@ -104,5 +110,6 @@ export {
   sleep,
   hashCode,
   downloadImage,
+  writeScreenshot,
   saveImage,
 }

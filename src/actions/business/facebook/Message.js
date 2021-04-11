@@ -3,7 +3,7 @@ import MessagePagae from '../../interface/facebook/MessagePage';
 import { Key, By } from 'selenium-webdriver';
 import { sleep, hashCode } from '../../../../libs/function';
 import SeleniumFunction from '../../../common/SeleniumFunction';
-import { addListener } from 'nodemon';
+
 
 class Message {
     constructor(driver, firebaseService, facebookInfo) {

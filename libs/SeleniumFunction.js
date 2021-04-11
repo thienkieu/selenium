@@ -1,4 +1,5 @@
 const {By, until} = require('selenium-webdriver');
+import { writeScreenshot } from './function';
 
 let SeleniumFunction = function(driver) {
     this.driver = driver;
@@ -84,6 +85,12 @@ let SeleniumFunction = function(driver) {
     this.click = async function (el) {
         return await el.click();
     };
+
+    this.takeScreenshot = async(path) => {
+      const data = await  this.driver.takeScreenshot();
+      writeScreenshot(data, path);
+    };
+
 };
 
 module.exports = SeleniumFunction;

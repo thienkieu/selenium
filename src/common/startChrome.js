@@ -1,10 +1,11 @@
 import  { spawn } from'child_process';
 
-let startChrome = async (port, path, profile, headless) => {
+let startChrome = async (port, path, profile, headless, env) => {
     let date_ob = new Date();
     let subprocess;
+    let path =  env == 'linux' ? 'google-chrome': 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe';
     if (headless) {
-        subprocess = await spawn ("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+        subprocess = await spawn (path,
             ['--remote-debugging-port='+port, '--user-data-dir='+path, '--profile-directory='+profile, '--headless'],
             {
                 detached : true,
@@ -12,7 +13,7 @@ let startChrome = async (port, path, profile, headless) => {
             }
         );
     }else {
-        subprocess = await spawn ("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+        subprocess = await spawn (path,
             ['--remote-debugging-port='+port, '--user-data-dir='+path, '--profile-directory='+profile],
             {
                 detached : true,
