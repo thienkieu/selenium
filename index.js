@@ -39,7 +39,7 @@ const fbs = [
         let inputPassword = await seleniumFunction.findByXPath('//input[@name="session[password]"][@type="password"]');
         await seleniumFunction.write(inputPassword, '0958588127thien');
 
-        let loginButton = await seleniumFunction.findByXPath('//div[@data-testid="LoginForm_Login_Button"][@role="button"][.="Log in"][@aria-disabled="true"]');
+        let loginButton = await seleniumFunction.findByXPath('//div[@data-testid="LoginForm_Login_Button"][@role="button"][.="Log in"]');
         await loginButton.click();
         sleep(5000);
         await seleniumFunction.takeScreenshot('./images/twiter.png');
