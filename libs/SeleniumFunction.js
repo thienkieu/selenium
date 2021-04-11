@@ -93,4 +93,4 @@ let SeleniumFunction = function(driver) {
 
 };
 
-module.exports = SeleniumFunction;
+export default SeleniumFunction;
