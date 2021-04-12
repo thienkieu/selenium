@@ -1,5 +1,5 @@
-import { Builder, By, until} from 'selenium-webdriver';
-import chrome from 'selenium-webdriver/chrome';
+const { Builder, By, until} = require ('selenium-webdriver');
+const chrome  = require('selenium-webdriver/chrome');
 
 let WebDriver = function (port) {
     let o = new chrome.Options();
@@ -19,4 +19,4 @@ let WebDriver = function (port) {
     return driver;
 }
 
-export default WebDriver;
+module.exports =  WebDriver;

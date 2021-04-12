@@ -15,8 +15,8 @@ const DynamixElementIdentity = (fn) => {
   this.fn = fn;
 }
 
-export default ElementIdentity;
-export {
+module.exports = {
+  ElementIdentity,
   DynamixElementIdentity,
   IdentityType
-}
+};

@@ -1,4 +1,4 @@
-import  { spawn } from'child_process';
+const  { spawn } = require ('child_process');
 
 let startChrome = async (port, path, profile, headless) => {
     let date_ob = new Date();
@@ -32,4 +32,4 @@ let startChrome = async (port, path, profile, headless) => {
     return subprocess;
 }
 
-export default startChrome;
+module.exports = startChrome;

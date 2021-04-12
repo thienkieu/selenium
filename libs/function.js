@@ -1,9 +1,9 @@
-import fs from 'fs';
-import request from 'request';
+const fs = require('fs');
+const request = require('request');
 
 const writeScreenshot = (data, name) => {
     name = name || 'ss.png';
-    let screenshotPath = 'C:\\selenium_local_map\\';
+    let screenshotPath = './';//'C:\\selenium_local_map\\';
     fs.writeFileSync(screenshotPath + name, data, 'base64');
 };
 
@@ -115,7 +115,7 @@ function makeFileName(title) {
 }
 
 
-export {
+module.exports = {
   sleep,
   hashCode,
   downloadImage,

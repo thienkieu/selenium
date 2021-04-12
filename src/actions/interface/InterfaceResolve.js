@@ -1,5 +1,5 @@
-import SeleniumFunction from '../../common/SeleniumFunction';
-import { IdentityType } from './ElementIdenity';
+const SeleniumFunction = require( '../../common/SeleniumFunction');
+const { IdentityType } = require('./ElementIdenity');
 
 const InterfaceResolve = {
     Single: async (elementIdentity, parentEl, driver) => {
@@ -22,4 +22,4 @@ const InterfaceResolve = {
 
 }
 
-export default InterfaceResolve;
+module.exports = InterfaceResolve;

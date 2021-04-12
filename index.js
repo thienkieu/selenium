@@ -12,7 +12,7 @@ import Message from './src/actions/business/facebook/Message';
 const fbs = [
     {
         id: 'thuhien.lethi.5095',
-        port: '9222',
+        port: '9234',
         userDir: 'C:\\autoFb\\hien',
         profile: 'hien',
         conversations: {},
@@ -28,6 +28,14 @@ const fbs = [
 
 (async ()=>{
 
+    var au = require('autoit');
+ 
+    au.Init();
+    au.Run("notepad.exe");
+    au.WinWait("[Class:Notepad]");
+    au.Send("Hello, autoit & nodejs!");
+
+    return ;
     let drivers = [];
     for(let i = 0;i < fbs.length; i++) {
        // await startChrome(fbs[i].port, fbs[i].userDir, fbs[i].profile, false);

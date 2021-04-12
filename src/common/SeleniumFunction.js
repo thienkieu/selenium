@@ -1,5 +1,5 @@
-import {By, until} from 'selenium-webdriver';
-import { writeScreenshot } from '../../libs/function';
+const {By, until} = require('selenium-webdriver');
+const { writeScreenshot } = require('../../libs/function');
 
 let SeleniumFunction = function(driver) {
     this.driver = driver;
@@ -103,4 +103,4 @@ let SeleniumFunction = function(driver) {
     };
 };
 
-export default SeleniumFunction;
+module.exports = SeleniumFunction;
